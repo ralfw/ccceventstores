@@ -99,12 +99,25 @@ export class MemoryEventStore implements EventStore {
     await fs.writeFile(filename, data, { encoding: 'utf-8' });
   }
 
-  static async createFromFile(filename: string, writeThruMode: boolean = false): Promise<MemoryEventStore> {
+  static async createFromFile(filename: string, ignoreMissingFile: boolean = false, writeThruMode: boolean = false): Promise<MemoryEventStore> {
     const fs = await import('node:fs/promises');
-    const data = await fs.readFile(filename, { encoding: 'utf-8' });
-    const eventStream = EventStream.deserialize(data);
-    const store = new MemoryEventStore(writeThruMode ? filename : undefined);
-    store.eventStream = eventStream;
-    return store;
-  }  
+    
+    try {
+      const data = await fs.readFile(filename, { encoding: 'utf-8' });
+      const eventStream = EventStream.deserialize(data);
+      const store = new MemoryEventStore(writeThruMode ? filename : undefined);
+      store.eventStream = eventStream;
+      return store;
+    } catch (error) {
+      // If file doesn't exist and ignoreMissingFile is true, create empty store
+      if (error && typeof error === 'object' && 'code' in error && 
+          error.code === 'ENOENT' && 
+          ignoreMissingFile) {
+        const store = new MemoryEventStore(writeThruMode ? filename : undefined);
+        return store;
+      }
+      // Otherwise, re-throw the error
+      throw error;
+    }
+  }
 }
