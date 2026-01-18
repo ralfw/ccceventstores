@@ -4,13 +4,18 @@ import { createQuery } from '../../filter/index.ts';
 
 import { EventStream } from './eventstream.ts';
 import { processQuery } from './queryprocessor.ts';
-import { ReadWriteLockFIFO } from "./readwritelock.ts"
+import { ReadWriteLockFIFO } from "./readwritelock.ts"
 
 
 export class MemoryEventStore implements EventStore {
   private eventStream = new EventStream();
   private notifier: EventStreamNotifier = new MemoryEventStreamNotifier();
   private lock: ReadWriteLockFIFO = new ReadWriteLockFIFO();
+  private writeThruFilename?: string;
+
+  constructor(writeThruFilename?: string) {
+    this.writeThruFilename = writeThruFilename;
+  }
 
   async query(): Promise<QueryResult>;
   async query(eventQuery: EventQuery): Promise<QueryResult>;
@@ -70,6 +75,10 @@ export class MemoryEventStore implements EventStore {
 
         const eventRecords = this.eventStream.append(events);
 
+        if (this.writeThruFilename) {
+            await this.storeToFile(this.writeThruFilename);
+        }
+
         await this.notifier.notify(eventRecords);
             // TODO: or should this be moved after the lock release? would probably require queueing notifications to keep them in order
     }
@@ -90,11 +99,11 @@ export class MemoryEventStore implements EventStore {
     await fs.writeFile(filename, data, { encoding: 'utf-8' });
   }
 
-  static async createFromFile(filename: string): Promise<MemoryEventStore> {
+  static async createFromFile(filename: string, writeThruMode: boolean = false): Promise<MemoryEventStore> {
     const fs = await import('node:fs/promises');
     const data = await fs.readFile(filename, { encoding: 'utf-8' });
     const eventStream = EventStream.deserialize(data);
-    const store = new MemoryEventStore();
+    const store = new MemoryEventStore(writeThruMode ? filename : undefined);
     store.eventStream = eventStream;
     return store;
   }  

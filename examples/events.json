@@ -1,7 +1,8 @@
 { "events": [
-{"sequenceNumber":1,"timestamp":"2026-01-18T12:09:45.597Z","eventType":"e1","payload":{"message":"hello"}},
-{"sequenceNumber":2,"timestamp":"2026-01-18T12:09:45.597Z","eventType":"e1","payload":{"message":"world!"}},
-{"sequenceNumber":3,"timestamp":"2026-01-18T12:09:45.597Z","eventType":"e2","payload":{"amount":99}}
+{"sequenceNumber":1,"timestamp":"2026-01-18T12:25:06.759Z","eventType":"e1","payload":{"message":"hello"}},
+{"sequenceNumber":2,"timestamp":"2026-01-18T12:25:06.760Z","eventType":"e1","payload":{"message":"world!"}},
+{"sequenceNumber":3,"timestamp":"2026-01-18T12:25:06.760Z","eventType":"e2","payload":{"amount":99}},
+{"sequenceNumber":4,"timestamp":"2026-01-18T12:25:06.762Z","eventType":"e1","payload":{"message":"good bye"}}
 ],
-"lastSequenceNumber": 3
+"lastSequenceNumber": 4
 }
