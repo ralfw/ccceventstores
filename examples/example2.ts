@@ -1,4 +1,5 @@
-import { MemoryEventStore, createFilter } from './deno.eventstore/index.ts';
+import { Console } from 'node:console';
+import { MemoryEventStore, createFilter } from '../src/mod.ts';
 
 const es = new MemoryEventStore();
 
@@ -56,5 +57,10 @@ contextModel = context.events.reduce((acc, event) => {
 if (contextModel.balance < amountToWithdraw)
     throw new Error("Not enough funds! #3")
 
+try {
 await es.append([{eventType:"MoneyWithdrawn", payload:{amount:amountToWithdraw, accountnumber:"123456"}}], 
                 contextFilter, context.maxSequenceNumber);
+} catch (error) {
+    console.log("*** Conflicting change detected! ***");
+    console.log(`    ${error instanceof Error ? error.message : String(error)}`);
+}

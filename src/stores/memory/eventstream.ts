@@ -19,21 +19,33 @@ export class EventStream {
     }
 
     serialize(): string {
-        const serializedRecords = this.eventRecords.map(record => ({
-            ...record,
-            timestamp: record.timestamp.toISOString()
-        }));
-        return JSON.stringify({
-            eventRecords: serializedRecords,
-            lastSequenceNumber: this.lastSequenceNumber
+        // Start with opening the JSON object and events array
+        let result = '{ "events": [\n';
+        
+        // Serialize each event record separately
+        const serializedEvents = this.eventRecords.map(record => {
+            const serializedRecord = {
+                ...record,
+                timestamp: record.timestamp.toISOString()
+            };
+            return JSON.stringify(serializedRecord);
         });
+        
+        // Join events with comma and newline
+        result += serializedEvents.join(',\n');
+        
+        // Close array and add lastSequenceNumber
+        result += '\n],\n';
+        result += `"lastSequenceNumber": ${this.lastSequenceNumber}\n}`;
+        
+        return result;
     }
 
     static deserialize(serialized: string): EventStream {
         const obj = JSON.parse(serialized);
         const eventStream = new EventStream();
         eventStream.lastSequenceNumber = obj.lastSequenceNumber;
-        eventStream.eventRecords.push(...obj.eventRecords.map((record: any) => ({
+        eventStream.eventRecords.push(...obj.events.map((record: any) => ({
             ...record,
             timestamp: new Date(record.timestamp)
         })));
