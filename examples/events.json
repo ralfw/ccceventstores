@@ -1,0 +1,1 @@
+{"eventRecords":[{"sequenceNumber":1,"timestamp":"2026-01-18T10:39:07.775Z","eventType":"e1","payload":{"message":"hello"}},{"sequenceNumber":2,"timestamp":"2026-01-18T10:39:07.776Z","eventType":"e1","payload":{"message":"world!"}},{"sequenceNumber":3,"timestamp":"2026-01-18T10:39:07.776Z","eventType":"e2","payload":{"amount":99}}],"lastSequenceNumber":3}
