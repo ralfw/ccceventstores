@@ -1,3 +1,14 @@
+# How to
+
+How to reference the event store in your code:
+
+```
+import { MemoryEventStore, createFilter } from "https://raw.githubusercontent.com/ralfw/ccceventstores/main/src/mod.ts";
+
+```
+
+Use the `githubusercontent.com` URL to point to this repository.
+
 # Example 1
 
 Persisting events.
