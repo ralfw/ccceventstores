@@ -424,15 +424,13 @@ This works very efficiently even with relational databases like PostgreSQL.
 
 *Documentation to come...*
 
-## Identity and Scopes in Event Stores
+## Identity and Correlation
 
 So much for the documentationn of event store functionality. You're good to go. Give it a spin!
 
 However... there are two problems addressed by other event store implementations through very specific features: the problem of the notorious DDD *Aggregate* and correlating events in general.
 
 Both problems seem to not be related to event sourcing in particular. Hence the event store does not provide any specific features to address them. Nevertheless it can be assumed you want to hear what to do about them. They are so commonly discussed in the literature or on social media, this documentation would not be complete without mentioning them.
-
-### Identity and Correlation
 
 Identity comes up as soon as object-orientation enters the discussion. How to identify objets somehow persisted in an event store? There are no single entries for them like in a relational database.
 
@@ -506,3 +504,13 @@ The "studentPaidTuition" event is related to the registration. It falls into its
 This makes the filter a little bit more complicated, because the scope root's event ID can appear in two places - as the root event's ID at the top level of the payload, and as a reference in the `scopes` array. But this is not that bad compared to the conceptual clarity that is gained.
 
 No special features need to be implemented to correlated events. No foreign concepts leak into the event store implementation.
+
+# Literature
+
+Rico Fritzsche and I have written a couple of articles on our view of event sourcing [here](https://ricofritzsche.me/tag/event-sourcing/) and [here](https://ralfwestphal.substack.com/s/event-orientation). We call it the [Command Context Consistenc (CCC)](https://ralfwestphal.substack.com/p/command-context-consistency) approach.
+
+But there is of course more you can read about event sourcing, e.g.
+
+- [Understanding Eventsourcing, Martin Dilger](https://leanpub.com/eventmodeling-and-eventsourcing)
+- [Event Sourcing, Greg Young](https://leanpub.com/eventsource)
+- [Patterns of Event Sourced Systems, Greg Young](https://leanpub.com/patternsofeventsourcedsystems)
