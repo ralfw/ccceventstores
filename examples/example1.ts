@@ -1,4 +1,4 @@
-import { MemoryEventStore, createFilter } from '../src/mod.ts';
+import { MemoryEventStore, createFilter, createQuery } from '../src/mod.ts';
 
 const es = await MemoryEventStore.createFromFile("events.json", true, true)
 await es.append([{eventType:"e1", payload:{message:"hello"}}])
@@ -6,6 +6,8 @@ await es.append([{eventType:"e1", payload:{message:"world!"}}])
 await es.append([{eventType:"e2", payload:{amount:99}}])
 
 const context = await es.query(createFilter(["e1"]));
+
+const q = createQuery(createFilter(["e1"]), createFilter(["e2"]));
 
 for (const event of context.events) {
   console.log(event.eventType, event.payload);
