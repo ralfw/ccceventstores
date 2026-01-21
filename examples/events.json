@@ -1,8 +1,0 @@
-{ "events": [
-{"sequenceNumber":1,"timestamp":"2026-01-18T12:45:05.178Z","eventType":"e1","payload":{"message":"hello"}},
-{"sequenceNumber":2,"timestamp":"2026-01-18T12:45:05.179Z","eventType":"e1","payload":{"message":"world!"}},
-{"sequenceNumber":3,"timestamp":"2026-01-18T12:45:05.180Z","eventType":"e2","payload":{"amount":99}},
-{"sequenceNumber":4,"timestamp":"2026-01-18T12:45:05.181Z","eventType":"e1","payload":{"message":"good bye"}}
-],
-"lastSequenceNumber": 4
-}
